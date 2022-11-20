@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PostsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +16,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['prefix' => 'post'], function() {
+    Route::get('create', [PostsController::class, 'create'])->name('post.create');
+    Route::post('/', [PostsController::class, 'store'])->name('post.store');
+    Route::get('{post_id}', [PostsController::class, 'show'])->name("post.show");
+});
+
+Route::group(['prefix' => 'profile'], function() {
+    Route::get('{user_id}', [ProfileController::class, 'index'])->name('profile.show');
+    Route::get('{user_id}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+});

@@ -1,211 +1,122 @@
 @extends('layouts.app')
 
-@section('content')
+@section('css')
+
 <style>
-    .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
+    nav {
+        display: none !important;
     }
 
-    @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-            font-size: 3.5rem;
-        }
+    body {
+        background-color: var(--bs-light);
     }
 
-    .b-example-divider {
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+    .row>.col-md-4:first-child {
+        background-image: url('/images/mobile.png');
+        background-size: cover;
+        background-position: top center;
     }
 
-    .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-    }
-
-    .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-    }
-
-    .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-    }
-
-    .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
+    i {
+        background-image: url("/images/insta.png");
+        background-position: 0px -554px;
+        background-size: auto;
+        width: 175px;
+        height: 51px;
+        background-repeat: no-repeat;
+        display: inline-block;
     }
 </style>
 
+@endsection
 
+@section('content')
 
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-    <symbol id="check" viewBox="0 0 16 16">
-        <title>Check</title>
-        <path
-            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
-    </symbol>
-</svg>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 offset-md-2">
 
-<div class="container py-3">
-    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-        <div class="col">
-            <div class="card mb-4 rounded-3 shadow-sm">
-                <div class="card-header py-3">
-                    <h4 class="my-0 fw-normal">Free</h4>
+        </div>
+        <div class="col-md-4">
+            <div class="row g-3">
+                <div class="col-12">
+                    <div class="card rounded-0">
+                        <div class="card-body">
+                            <div class="text-center py-3 py-md-5">
+                                <i></i>
+                            </div>
+                            <form method="POST" action="{{ route('login') }}">
+                                @csrf
+
+                                <div class="row row-cols-1 g-3">
+                                    <div class="col">
+                                        <input id="email" type="email"
+                                            class="form-control @error('email') is-invalid @enderror" name="email"
+                                            value="{{ old('email') }}" required autocomplete="email"
+                                            placeholder="Enter your email here" autofocus>
+
+                                        @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col">
+                                        <input id="password" type="password"
+                                            class="form-control @error('password') is-invalid @enderror" name="password"
+                                            placeholder="Enter your password here" required
+                                            autocomplete="current-password">
+
+                                        @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col">
+                                        <button type="submit" class="btn w-100 btn-primary">
+                                            {{ __('Login') }}
+                                        </button>
+                                    </div>
+
+                                    @if (Route::has('password.request'))
+                                    <div class="col">
+                                        <div class="text-center">
+                                            <a class="btn btn-link" href="{{ route('password.request') }}">
+                                                {{ __('Forgot Your Password?') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    @endif
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <h1 class="card-title pricing-card-title">$0<small class="text-muted fw-light">/mo</small></h1>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>10 users included</li>
-                        <li>2 GB of storage</li>
-                        <li>Email support</li>
-                        <li>Help center access</li>
-                    </ul>
-                    <button type="button" class="w-100 btn btn-lg btn-outline-primary">Sign up for free</button>
+                <div class="col-12">
+                    <div class="card rounded-0">
+                        <div class="card-body">
+                            Don't have an account? <a href="{{ route('register') }}" class="text-decoration-none">Sign up</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="row align-items-center justify-content-center g-3">
+                        <div class="col-12">
+                            <div class="text-center">Get the app</div>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="{{ asset('images/playstore.png') }}" class="img-fluid">
+                        </div>
+                        <div class="col-md-6">
+                            <img src="{{ asset('images/appstore.png') }}" class="img-fluid">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card mb-4 rounded-3 shadow-sm">
-                <div class="card-header py-3">
-                    <h4 class="my-0 fw-normal">Pro</h4>
-                </div>
-                <div class="card-body">
-                    <h1 class="card-title pricing-card-title">$15<small class="text-muted fw-light">/mo</small></h1>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>20 users included</li>
-                        <li>10 GB of storage</li>
-                        <li>Priority email support</li>
-                        <li>Help center access</li>
-                    </ul>
-                    <button type="button" class="w-100 btn btn-lg btn-primary">Get started</button>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card mb-4 rounded-3 shadow-sm border-primary">
-                <div class="card-header py-3 text-bg-primary border-primary">
-                    <h4 class="my-0 fw-normal">Enterprise</h4>
-                </div>
-                <div class="card-body">
-                    <h1 class="card-title pricing-card-title">$29<small class="text-muted fw-light">/mo</small></h1>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>30 users included</li>
-                        <li>15 GB of storage</li>
-                        <li>Phone and email support</li>
-                        <li>Help center access</li>
-                    </ul>
-                    <button type="button" class="w-100 btn btn-lg btn-primary">Contact us</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <h2 class="display-6 text-center mb-4">Compare plans</h2>
-
-    <div class="table-responsive">
-        <table class="table text-center">
-            <thead>
-                <tr>
-                    <th style="width: 34%;"></th>
-                    <th style="width: 22%;">Free</th>
-                    <th style="width: 22%;">Pro</th>
-                    <th style="width: 22%;">Enterprise</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row" class="text-start">Public</th>
-                    <td><svg class="bi" width="24" height="24">
-                            <use xlink:href="#check" />
-                        </svg></td>
-                    <td><svg class="bi" width="24" height="24">
-                            <use xlink:href="#check" />
-                        </svg></td>
-                    <td><svg class="bi" width="24" height="24">
-                            <use xlink:href="#check" />
-                        </svg></td>
-                </tr>
-                <tr>
-                    <th scope="row" class="text-start">Private</th>
-                    <td></td>
-                    <td><svg class="bi" width="24" height="24">
-                            <use xlink:href="#check" />
-                        </svg></td>
-                    <td><svg class="bi" width="24" height="24">
-                            <use xlink:href="#check" />
-                        </svg></td>
-                </tr>
-            </tbody>
-
-            <tbody>
-                <tr>
-                    <th scope="row" class="text-start">Permissions</th>
-                    <td><svg class="bi" width="24" height="24">
-                            <use xlink:href="#check" />
-                        </svg></td>
-                    <td><svg class="bi" width="24" height="24">
-                            <use xlink:href="#check" />
-                        </svg></td>
-                    <td><svg class="bi" width="24" height="24">
-                            <use xlink:href="#check" />
-                        </svg></td>
-                </tr>
-                <tr>
-                    <th scope="row" class="text-start">Sharing</th>
-                    <td></td>
-                    <td><svg class="bi" width="24" height="24">
-                            <use xlink:href="#check" />
-                        </svg></td>
-                    <td><svg class="bi" width="24" height="24">
-                            <use xlink:href="#check" />
-                        </svg></td>
-                </tr>
-                <tr>
-                    <th scope="row" class="text-start">Unlimited members</th>
-                    <td></td>
-                    <td><svg class="bi" width="24" height="24">
-                            <use xlink:href="#check" />
-                        </svg></td>
-                    <td><svg class="bi" width="24" height="24">
-                            <use xlink:href="#check" />
-                        </svg></td>
-                </tr>
-                <tr>
-                    <th scope="row" class="text-start">Extra security</th>
-                    <td></td>
-                    <td></td>
-                    <td><svg class="bi" width="24" height="24">
-                            <use xlink:href="#check" />
-                        </svg></td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 </div>
-
-
-
-</body>
-
-</html>
-
 @endsection

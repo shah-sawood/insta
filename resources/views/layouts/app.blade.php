@@ -9,15 +9,16 @@
 
     <!-- Boostrap css -->
     <link rel="stylesheet" href="{{ asset('bootstrap-5.2.2-dist/css/bootstrap.min.css') }}">
+    @yield('css')
 
     <title>Insta</title>
 </head>
 
 <body class="container-fluid">
     <div class="row">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-white sticky-top shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ route('welcome') }}">
                     <img src="{{ asset('images/logo.webp') }}" width="30px" alt="insta logo">&nbsp;&nbsp;|&nbsp;&nbsp;Insta
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -29,8 +30,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
-                    </ul>
+                        <li clas="nav-item">
+                            <a href="{{ route('welcome') }}" class="nav-link active">Home</a>
+                        </li>
+                    </ul> 
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
@@ -51,10 +54,11 @@
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }}
+                                {{ Auth::user()->name ?? 'More' }}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ url('profile', [Auth::user()->id]) }}">Profile</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
