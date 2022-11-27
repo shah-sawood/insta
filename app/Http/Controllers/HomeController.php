@@ -12,23 +12,22 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+
+    // public function __construct()
+    // {
+    //     $this->middleware('guest');
+    // }
 
     /**
-     * Show the application dashboard.
+     * Welcome new users.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
         if (Auth::check())
-            return redirect()->route('profile.show', [
-                'user_id' => auth()->user()->id
-            ]);
+            return redirect()->route('profile.show', [auth()->user()->id]);
         else
-            return redirect()->route('welcome');
+            return view('welcome');
     }
 }

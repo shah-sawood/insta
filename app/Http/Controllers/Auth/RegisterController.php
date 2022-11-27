@@ -30,7 +30,15 @@ class RegisterController extends Controller
      * @var string
      */
     // protected $redirectTo = RouteServiceProvider::HOME;
-    protected $redirectTo = '/profile';
+    protected function redirectTo()
+    {
+        if ((auth()->user()->profile ?? '')) {
+            return route('profile.show', [auth()->user()->id]);
+        }
+        
+        return route('profile.create');
+    }
+
 
     /**
      * Create a new controller instance.

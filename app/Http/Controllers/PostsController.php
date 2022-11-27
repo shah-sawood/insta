@@ -2,75 +2,118 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
-use SebastianBergmann\Type\VoidType;
-use App\Models\Post;
 
 class PostsController extends Controller
 {
 
-   /**
-    * Require authenticated user before any post actions
-    */
+    /**
+     * Allow authenticated users only
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
-   public function __construct()
-   {
-      $this->middleware('auth');
-   }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+    }
 
-   /**
-    * Display create a post page
-    */
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view("posts.create");
+    }
 
-   public function create()
-   {
-      return view("posts.create");
-   }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        /**
+         * Validate posted data
+         */
 
-   /**
-    * Create a post
-    */
+        $data = request()->validate([
+            'caption' => ['required', 'string'],
+            'image' => ['required', 'image'],
+        ]);
 
-   public function store()
-   {
+        /**
+         * Save post to the database
+         */
 
-      /**
-       * Validate posted data
-       */
+        $imagePath = request('image')->store('uploads', 'public');
 
-      $data = request()->validate([
-         'caption' => ['required', 'string'],
-         'image' => ['required', 'image'],
-      ]);
+        // resize the image to a 1200x1200 box
+        $image = Image::make(public_path("storage/{$imagePath}"))->fit(1200, 1200);
+        $image->save();
 
-      /**
-       * Save post to the database
-       */
+        auth()->user()->posts()->create([
+            'caption' => $data['caption'] ?? 'N/A',
+            'image' => $imagePath ?? 'N/A',
+        ]);
 
-      $imagePath = request('image')->store('uploads', 'public');
+        return redirect()->route('profile.show', [auth()->user()->id]);
+    }
 
-      // resize the image to a 1200x1200 box
-      $image = Image::make(public_path("storage/{$imagePath}"))->fit(1200, 1200);
-      $image->save();
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Post $post)
+    {
+        return view("posts.show", compact('post'));
+    }
 
-      auth()->user()->posts()->create([
-         'caption' => $data['caption'] ?? 'N/A',
-         'image' => $imagePath ?? 'N/A',
-      ]);
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Post $post)
+    {
+        //
+    }
 
-      return redirect('/profile/' . auth()->user()->id);
-   }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Post $post)
+    {
+        //
+    }
 
-   /**
-    * Detail view of post
-    */
-
-   public function show(Post $post_id)
-   {
-      $post = $post_id;
-      return view("posts.show", [
-         'post' => $post,
-      ]);
-   }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Post $post)
+    {
+        //
+    }
 }

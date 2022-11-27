@@ -20,13 +20,22 @@ Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
 Auth::routes();
 
-Route::group(['prefix' => 'post'], function() {
+Route::group(['prefix' => 'posts'], function() {
+    Route::get('', [PostsController::class, 'index'])->name('post.index');
     Route::get('create', [PostsController::class, 'create'])->name('post.create');
-    Route::post('/', [PostsController::class, 'store'])->name('post.store');
-    Route::get('{post_id}', [PostsController::class, 'show'])->name("post.show");
+    Route::post('', [PostsController::class, 'store'])->name('post.store');
+    Route::get('{post}', [PostsController::class, 'show'])->name("post.show");
+    Route::get('{post}/edit', [PostsController::class, 'edit'])->name('post.edit');
+    Route::patch('{post}', [PostsController::class, 'update'])->name('post.update');
+    Route::delete('{post}', [PostsController::class, 'destroy'])->name('post.destroy');
 });
 
 Route::group(['prefix' => 'profile'], function() {
-    Route::get('{user_id}', [ProfileController::class, 'index'])->name('profile.show');
-    Route::get('{user_id}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('create', [ProfileController::class, 'create'])->name('profile.create');
+    Route::post('', [ProfileController::class, 'store'])->name('profile.store');
+    Route::get('{user}', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('{user}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('{user}', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('{user}', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });

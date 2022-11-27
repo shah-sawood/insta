@@ -27,7 +27,15 @@ class LoginController extends Controller
      * @var string
      */
     // protected $redirectTo = RouteServiceProvider::HOME;
-    protected $redirectTo = '/profile';
+    protected function redirectTo()
+    {
+        if ((auth()->user()->profile ?? '')) {
+            return route('profile.show', [auth()->user()->id]);
+        }
+
+        return route('profile.create');
+    }
+
 
     /**
      * Create a new controller instance.
@@ -37,9 +45,5 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-    }
-
-    protected function redirectTo() {
-        return redirect()->route('profile.show', ['user_id', auth()->user()->id]);
     }
 }

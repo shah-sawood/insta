@@ -8,18 +8,20 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Boostrap css -->
-    <link rel="stylesheet" href="{{ asset('bootstrap-5.2.2-dist/css/bootstrap.min.css') }}">
+    @vite(['resources/js/app.js', 'resources/sass/app.scss'])
+
     @yield('css')
 
     <title>Insta</title>
 </head>
 
 <body class="container-fluid">
-    <div class="row">
+    <div class="row" id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white sticky-top shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('welcome') }}">
-                    <img src="{{ asset('images/logo.webp') }}" width="30px" alt="insta logo">&nbsp;&nbsp;|&nbsp;&nbsp;Insta
+                    <img src="{{ asset('images/logo.webp') }}" width="30px"
+                        alt="insta logo">&nbsp;&nbsp;|&nbsp;&nbsp;Insta
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -33,7 +35,7 @@
                         <li clas="nav-item">
                             <a href="{{ route('welcome') }}" class="nav-link active">Home</a>
                         </li>
-                    </ul> 
+                    </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
@@ -58,7 +60,8 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ url('profile', [Auth::user()->id]) }}">Profile</a>
+                                <a class="dropdown-item"
+                                    href="{{ route('profile.show', [Auth::user()->id]) }}">Profile</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
@@ -80,8 +83,6 @@
         </main>
         @include('footers.app')
 
-        <script src="{{ asset('bootstrap-5.2.2-dist/js/bootstrap.min.js') }}"></script>
-        <script src="{{ asset('bootstrap-5.2.2-dist/js/bootstrap.bundle.min.js') }}"></script>
     </div>
 </body>
 
